@@ -120,12 +120,24 @@ const solicitarPrestamo = () => {
           let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
           let cuota=dividir(total,prestamo.plazo);
           localStorage.setItem(`prestamo`,prestamo );   
-          Swal.fire({          
-            icon: 'success',
-            title: 'Credito Generado con Exito',
-            showConfirmButton: false,
-            timer: 1500
+          Swal.fire({
+            title: 'Quiere guardar los cambios?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              
+              Swal.fire('Saved!', '', 'Credito Generado con Exito')
+              
+            } else if (result.isDenied) {
+              Swal.fire('El credito no fue guardado', '', 'info')
+            }
           })
+
+         
             
         }
       }
