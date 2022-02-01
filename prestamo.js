@@ -50,12 +50,6 @@ class Loan {
 }
 
 
-
-    
-
-/**
- * Se encarga de mostrar en pantalla mediante un input el valor calculado de la solicitud de préstamo solicitada
- */
  const creditForm = document.querySelector('#creditForm'),
  inputMonto = document.getElementById('monto'),
  inputPlazo= document.getElementById('plazo');
@@ -63,16 +57,15 @@ class Loan {
  creditForm.onsubmit = (e) => {
  e.preventDefault();
 
- let formData = new FormData(creditForm)
-
+    let formData = new FormData(creditForm);
     const monto = formData.get('monto');
     const plazo = formData.get('plazo');
-  
+    if (cantidadCuotas(plazo) == true){
+      if (montoSolicitado(monto)==true){
     const prestamo = new Loan(monto, plazo);
     let interesBanco= prestamo.buscarInteres();
     let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
     let cuota=dividir(total,prestamo.plazo);
-    let listaordenada =  prestamo.interesordenado(); 
     let templateHead = `<table class="table">
     <thead>
       <tr>
@@ -92,93 +85,71 @@ class Loan {
         let interes =  interesBanco/plazo 
         let totalmes = cuota + (cuota * interes) /100
         templateRows += `
-        <tr><td>${index}</td><td>${cuota}</td><td>${interes}%</td><td>${totalmes}</td><td>${saldoDeudor}</td></tr>
+        <tr><td>${index}</td><td>${cuota.toFixed(2)}</td><td>${interes.toFixed(2)}%</td><td>${totalmes.toFixed(2)}</td><td>${saldoDeudor.toFixed(2)}</td></tr>
       `;
       saldoDeudor = saldoDeudor - cuota;
-
 }
 let templateFooter =  `  </tbody>
 </table>
 <div class="d-flex justify-content-end pt-4 gap-3">
-      <button type="submit" class="btn btn-primary">Solicitar</button>   
-      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+      <button type="submit" class="btn btn-primary" onclick="solicitarPrestamo();" >Solicitar</button>           
         </div>
-        
-       
  `
- const main = document.querySelector(`main`);
-let nuevoModal = crearNuevoModal();
-main.appendChild(nuevoModal);
-document.querySelector(`#modalForm`).innerHTML = templateHead + templateRows + templateFooter 
-document.querySelector(`#tituloModal`).innerHTML = `Simulacion Credito`;  
-document.querySelector(`.operacion-modal`).click();
-
+ document.getElementById("tabla").innerHTML = templateHead + templateRows + templateFooter ;
+      }
+      }
 };
-const crearNuevoModal = () => {
-    let nuevoModal = document.createElement(`div`);
-    nuevoModal.innerHTML = `
-    <!-- Botón Modal -->
-    <button type="button" class="btn btn-primary hidden operacion-modal" data-bs-toggle="modal" data-bs-target="#modal"></button>
-    <!-- Modal -->
-    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
-        <div class="modal-dialog modal-fullscreen-sm-down">
-            <div class="modal-content">
-                <div class="card card--modal m-auto">
-                    <div class="card-header">
-                        <h2 class="titulo-home m-auto" id="tituloModal"></h2>
-                    </div>
-                    <div class="card-body mt-3">
-                        <form id="modalForm">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`
-    return nuevoModal;
-}
 
 
 
 
 
+const solicitarPrestamo = () => {
 
-const solicitarPrestamo = (montoPrestamo, cantidadCuotas) => {
-
-    let monto = document.querySelector(`#monto`).value; 
- 
-    if (!isNaN(monto) && !isNaN(plazo)){
-        let validaciones = 1;
+  let formData = new FormData(creditForm);
+  const monto = formData.get('monto');
+  const plazo = formData.get('plazo');
      
-       if (cantidadCuotas(plazo)== 0){
-        document.write("Ingresó una cantidad de cuotas invalida </br>");
-  
-            let validaciones = 0;            
-        }
-        if (montoSolicitado(monto)== 0){
-            document.write("Ingresó un monto de la compra o prestamo invalido </br>");
-           
-            let validaciones = 0; 
-        }
-
-        if (validaciones == 1){
-            const prestamo = new Loan(monto, plazo);
-            let interesBanco=prestamo.buscarInteres();
-            let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
-            let cuota=dividir(total,prestamo.plazo);
-            let listaordenada =  prestamo.interesordenado();
-            document.write("El prestamo o compra tiene un interes del : "+interesBanco+" </br> El importe de cada cuota es : "+cuota +" </br>La cuota con el interes es : "+total+ "</br>");
-            document.write("Lista bancos e interes de los mismos:</br> ");
-             for (let i = 0; i < interesxBanco.length ; i++) {
+       if (cantidadCuotas(plazo) == true){
+        if (montoSolicitado(monto)==true){
+          let formData = new FormData(creditForm);
+          const monto = formData.get('monto');
+          const plazo = formData.get('plazo');        
+          const prestamo = new Loan(monto, plazo);
+          let interesBanco= prestamo.buscarInteres();
+          let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
+          let cuota=dividir(total,prestamo.plazo);
+          localStorage.setItem(`prestamo`,prestamo );   
+          Swal.fire({          
+            icon: 'success',
+            title: 'Credito Generado con Exito',
+            showConfirmButton: false,
+            timer: 1500
+          })
             
-                let li = document.createElement("li");
-                li.innerHTML =  ' banco: ' + interesxBanco[i].banco+ ' interes ' + interesxBanco[i].interes 
-                document.body.appendChild(li);
-
-             }
-             
-            
-       
-            }
+        }
+      }
 }
+function cantidadCuotas(plazo){
+  if (plazo <= 0){
+      Swal.fire({
+          icon: 'error',
+          title: 'Ups...',
+          text: `Has ingresado un número de cuotas inválido. El Plazo debe ser mayor a 0`,
+      })
+      return false;
+  }
+  return true;
+}
+
+function montoSolicitado(monto){
+  if (monto <= 1000 || monto > 1500000){
+      Swal.fire({
+          icon: 'error',
+          title: 'Ups...',
+          text: `Has ingresado un número de cuotas inválido. El minimo es $1000 y el maximo $1500000`,
+      })
+      return false;
+  }
+  return true;
 }
