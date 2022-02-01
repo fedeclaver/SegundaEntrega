@@ -72,45 +72,47 @@ class Loan {
     let interesBanco= prestamo.buscarInteres();
     let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
     let cuota=dividir(total,prestamo.plazo);
-    let listaordenada =  prestamo.interesordenado();
-    let posiblePrestamo = new Array();  
+    let listaordenada =  prestamo.interesordenado(); 
     let templateHead = `<table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
         <th scope="col">Mes</th>
-        <th scope="col">Principal</th>
-        <th scope="col">interes</th>
+        <th scope="col">Cuota</th>
+        <th scope="col">Interes</th>
         <th scope="col">Total</th>
+        <th scope="col">SaldoDeudor</th>
       </tr>
     </thead>
     <tbody>`;
-    let templateRows ;
-    const main = document.querySelector(`main`);
-    let nuevoModal = crearNuevoModal();
-    main.appendChild(nuevoModal);
-
-    for (let index = 1; index <= plazo.length; index++) {
-        // monthlyInterest * (loanRate.value/1200)
-             
-        let queda = total - cuota;
-        let interes = cuota * interesBanco
-        let totalmes = cuota + interes
+    let templateRows = '' ;
+ 
+    let saldoDeudor=total;
+    for (let index = 1; index <= plazo; index++) {            
+       
+        let interes =  interesBanco/plazo 
+        let totalmes = cuota + (cuota * interes) /100
         templateRows += `
-        <tr><td>${index}</td><td>${cuota}</td><td>${interes}</td><td>${totalmes}</td><td>${queda}</td></tr>
+        <tr><td>${index}</td><td>${cuota}</td><td>${interes}%</td><td>${totalmes}</td><td>${saldoDeudor}</td></tr>
       `;
-      
+      saldoDeudor = saldoDeudor - cuota;
 
 }
 let templateFooter =  `  </tbody>
 </table>
 <div class="d-flex justify-content-end pt-4 gap-3">
-      <button type="submit" class="btn btn-primary">Solicitar</button>       
+      <button type="submit" class="btn btn-primary">Solicitar</button>   
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
         </div>
         
        
  `
-document.getElementById("tablaCredito").innerHTML =templateHead + templateRows + templateFooter ; 
+ const main = document.querySelector(`main`);
+let nuevoModal = crearNuevoModal();
+main.appendChild(nuevoModal);
+document.querySelector(`#modalForm`).innerHTML = templateHead + templateRows + templateFooter 
+document.querySelector(`#tituloModal`).innerHTML = `Simulacion Credito`;  
+document.querySelector(`.operacion-modal`).click();
+
 };
 const crearNuevoModal = () => {
     let nuevoModal = document.createElement(`div`);
@@ -119,7 +121,7 @@ const crearNuevoModal = () => {
     <button type="button" class="btn btn-primary hidden operacion-modal" data-bs-toggle="modal" data-bs-target="#modal"></button>
     <!-- Modal -->
     <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-fullscreen-sm-down">
             <div class="modal-content">
                 <div class="card card--modal m-auto">
                     <div class="card-header">
@@ -127,7 +129,6 @@ const crearNuevoModal = () => {
                     </div>
                     <div class="card-body mt-3">
                         <form id="modalForm">
-                        <div id="tablaCredito"></div>
                         </form>
                     </div>
                 </div>
