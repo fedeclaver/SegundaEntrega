@@ -19,17 +19,27 @@ const interes = (a,b) => multiplicar(a,b)/100 ;
 
 
 
-class Loan {
-    constructor( monto,plazo) {
+class Prestamo {
+    constructor( monto,plazo,estado) {
+     // super(usuario)
         this.banco = "SANTANDER";
         this.monto  = parseFloat(monto);
         this.plazo = parseInt(plazo);   
         this.descripcion = `- Se ha solicitado un préstamo de $${this.monto} a devolver en ${this.cuotas} cuotas.`;   
+        this.interes = this.buscarInteres();
+        this.total = () => {
+          let interesBanco= this.buscarInteres();
+          return suma(this.monto,(interes(this.monto,interesBanco)))
+        }
+        this.cuota  = () => {
+          return dividir(this.total(),this.plazo);
+        } 
+        this.estado = estado;
     }
 
+ 
 
-
-   interesordenado(){
+   interesordenado = () => {
     return interesxBanco.sort(function (a, b) {
         if (a.interes > b.interes) {
           return 1;
@@ -42,7 +52,7 @@ class Loan {
       });
 
    }
-    buscarInteres(){       
+    buscarInteres = () => {     
        let int =  interesxBanco.find(element => element.banco === this.banco );  
        this.interes = int.interes;
       return this.interes
@@ -62,10 +72,10 @@ class Loan {
     const plazo = formData.get('plazo');
     if (cantidadCuotas(plazo) == true){
       if (montoSolicitado(monto)==true){
-    const prestamo = new Loan(monto, plazo);
-    let interesBanco= prestamo.buscarInteres();
-    let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
-    let cuota=dividir(total,prestamo.plazo);
+    const prestamo = new Prestamo(monto, plazo,'simulacion');
+    let total=prestamo.total();
+    let int=prestamo.buscarInteres();
+    let cuota=prestamo.cuota();
     let templateHead = `<table class="table">
     <thead>
       <tr>
@@ -82,7 +92,7 @@ class Loan {
     let saldoDeudor=total;
     for (let index = 1; index <= plazo; index++) {            
        
-        let interes =  interesBanco/plazo 
+        let interes =  int/plazo 
         let totalmes = cuota + (cuota * interes) /100
         templateRows += `
         <tr><td>${index}</td><td>${cuota.toFixed(2)}</td><td>${interes.toFixed(2)}%</td><td>${totalmes.toFixed(2)}</td><td>${saldoDeudor.toFixed(2)}</td></tr>
@@ -96,30 +106,17 @@ let templateFooter =  `  </tbody>
         </div>
  `
  document.getElementById("tabla").innerHTML = templateHead + templateRows + templateFooter ;
+ appendObjectToLocalStorage(prestamo,'prestamo');
       }
       }
 };
 
-
-
-
-
 const solicitarPrestamo = () => {
 
-  let formData = new FormData(creditForm);
-  const monto = formData.get('monto');
-  const plazo = formData.get('plazo');
-     
-       if (cantidadCuotas(plazo) == true){
-        if (montoSolicitado(monto)==true){
-          let formData = new FormData(creditForm);
-          const monto = formData.get('monto');
-          const plazo = formData.get('plazo');        
-          const prestamo = new Loan(monto, plazo);
-          let interesBanco= prestamo.buscarInteres();
-          let total=suma(prestamo.monto,(interes(prestamo.monto,interesBanco)));
-          let cuota=dividir(total,prestamo.plazo);
-          localStorage.setItem(`prestamo`,prestamo );   
+  let prestamo =loadFromLocalStorage('prestamo');
+  prestamo[0].estado = 'otorgado';
+
+       if (prestamo){        
           Swal.fire({
             title: 'Quiere guardar los cambios?',
             showDenyButton: true,
@@ -129,7 +126,8 @@ const solicitarPrestamo = () => {
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              
+              removeFromLocalStorage('prestamo');
+              appendObjectToLocalStorage(prestamo,'prestamo');
               Swal.fire('Saved!', '', 'Credito Generado con Exito')
               
             } else if (result.isDenied) {
@@ -141,27 +139,3 @@ const solicitarPrestamo = () => {
             
         }
       }
-}
-function cantidadCuotas(plazo){
-  if (plazo <= 0){
-      Swal.fire({
-          icon: 'error',
-          title: 'Ups...',
-          text: `Has ingresado un número de cuotas inválido. El Plazo debe ser mayor a 0`,
-      })
-      return false;
-  }
-  return true;
-}
-
-function montoSolicitado(monto){
-  if (monto <= 1000 || monto > 1500000){
-      Swal.fire({
-          icon: 'error',
-          title: 'Ups...',
-          text: `Has ingresado un número de cuotas inválido. El minimo es $1000 y el maximo $1500000`,
-      })
-      return false;
-  }
-  return true;
-}

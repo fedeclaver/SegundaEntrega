@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;600;900&display=swap" rel="stylesheet">
+    <!-- Mi CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Tarjetas | CoderBanking</title>
+</head>
+<body class="home-body fixed-top">
+    <section class="sidebar-container">
+        <h3 class="titulo-menu mx-5 px-5 pt-4 pb-4">Menú</h3>
+        <ul class="menu">
+            <li class="py-2 links"><a href="home.html"><p>Posición consolidada</p></a></li>
+            <li class="py-2 links"><a href="cotizaciones.html"><p>Cotizaciones</p></a></li>
+            <li class="py-2 links links--selected"><p>Solicitar tarjeta</p></li>
+            <li class="py-2 links"><a href="prestamos.html"><p class="selected">Solicitar préstamo</p></a></li>
+        </ul>
+    </section>
+    <div class="w-100 h-100">
+        <header>
+            <nav class="navbar navbar-dark navbar-expand-sm navbar-secondary bg-secondary shadow fixed-top">
+                <div class="container">
+                    <a class="navbar-brand d-flex align-items-center" href="#"><img width="40" height="40" src="../assets/images/digital-wallet.png" alt=""><span class="navbar-title ps-3">CoderBanking</span></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img class="me-1" src="../assets/images/user.png" alt="imagen de usuario"><span>Mi cuenta</span></a>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-start">
+                                <li><a class="dropdown-item" id="misDatos" href="#">Mis datos</a></li>
+                                <li><a class="dropdown-item" href="#">Configuración</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="../index.html">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <main class="container-fluid">
+            <div class="container-fluid">
+                <div class="row pt-3">
+                    <div class="col-sm-11 m-auto">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="titulo-home m-auto">Tarjetas</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6">
+                                        <div class="main-container">
+                                            <div class="scene">
+                                                <!-- Tarjeta -->
+                                                <div class="tarjeta" id="card">
+                                                    <!-- Frente -->
+                                                    <div class="tarjeta__front">
+                                                        <img src="../assets/svg/visa-logo.svg" class="tarjeta__logo" />
+                                                    <div class="tarjeta__number number d-flex flex-row">
+                                                        <div class="number-group number-group--0">4011</div>
+                                                        <div class="number-group number-group--1">2016</div>
+                                                        <div class="number-group number-group--2">7239</div>
+                                                        <div class="number-group number-group--3">1586</div>
+                                                    </div>
+                                                    <div class="tarjeta__details">
+                                                        <div class="tarjeta__holder">
+                                                            <span class="tarjeta__holder__title">Nombre y apellido</span>
+                                                            <span class="tarjeta__holder__name">John Doe</span>
+                                                        </div>
+                                                        <div class="tarjeta__expiration">
+                                                            <span class="tarjeta__expiration__title">Expiración</span>
+                                                            <span class="tarjeta__expiration__date">11/28</span>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <!-- Dorso -->
+                                                    <div class="tarjeta__back">
+                                                        <div class="tarjeta__stripe"></div>
+                                                        <div class="tarjeta__signature">
+                                                            <span class="tarjeta__cvv">CVV</span>
+                                                            <span class="tarjeta__cvv-number">239</span>
+                                                        </div>
+                                                        <p class="tarjeta__info">
+                                                            Using this card to purchase goods and services whenever you see
+                                                            the VISA symbol. Your use of this card is acceptance to your
+                                                            issuer's arragements including amendments.
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 m-auto pt-4">
+                                        <p>Bienvenido al área de solicitud de tarjetas de crédito y débito.</p>     
+                                        <p>Aquí podrá solicitar la aprobación de las mismas, y si aprueba nuestros requisitos, podrá operar con la misma ya que se le brindará una tarjeta virtual, hasta el momento de que el plástico virtual llegue a su domicilio.</p>            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-11 col-md-4 m-auto">
+                        <div class="card card--prestamo m-auto">
+                            <div class="card-header">
+                                <h2 class="titulo-home m-auto">Solicitud</h2>
+                            </div>
+                            <div class="card-body mt-3">
+                                <form id="creditForm">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon size="large" name="person-outline"></ion-icon></span>
+                                        <input id="nombreCompletoUsuario" type="text" name="nombreCompleto" class="form-control" placeholder="Nombre y apellido" disabled>
+                                        <small class="col-12 mt-1"><p></p></small>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon size="large" name="arrow-forward-outline"></ion-icon></span>
+                                        <input id="edadUsuario" type="number" name="edad" class="form-control" placeholder="Edad" disabled>
+                                        <small class="col-12 mt-1"><p></p></small>
+                                    </div> 
+                                    <div class="input-group">
+                                        <span class="input-group-text"><ion-icon size="large" name="arrow-forward-outline"></ion-icon></span>
+                                        <input id="sueldoUsuario" type="number" name="sueldo" class="form-control" placeholder="Sueldo actual" disabled>
+                                        <small class="col-12 mt-1"><p></p></small>
+                                    </div> 
+                                    <div class="d-flex justify-content-end pt-4 gap-3">
+                                        <button id="cargarDatos" type="button" class="btn btn-primary">Cargar datos</button>
+                                        <button type="button" id="enviarSolicitud" class="btn btn-primary">Solicitar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 img-box m-auto">
+                        <img src="../assets/svg/credit-card.svg" alt="" class="img-fluid">
+                    </div> 
+                </div> 
+            </div>
+        </main>
+        <footer>
+            <nav class="nav">
+                <a href="home.html" class="nav__link">
+                    <ion-icon size="large" name="home-outline"></ion-icon>
+                    <span>Home</span>
+                </a>
+                <a href="cotizaciones.html" class="nav__link">
+                    <ion-icon size="large" name="cash-outline"></ion-icon>
+                    <span>Cotizaciones</span>
+                </a>
+                <a href="#" class="nav__link nav__link--active">
+                    <ion-icon size="large" name="card-outline"></ion-icon>
+                    <span>Solicitar tarjeta</span>
+                </a>
+                <a href="prestamos.html" class="nav__link">
+                    <ion-icon size="large" name="wallet-outline"></ion-icon>
+                    <span>Solicitar préstamo</span>
+                </a>
+            </nav>
+        </footer>
+    </div> 
+    <!-- Iconos -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../src/datosPersonales.js"></script>
+    <script src="../src/creacionesModal.js"></script>
+    <script src="../src/validacionesOperacion.js"></script>
+    <script src="../src/validacionesUsuario.js"></script>
+    <script src="../src/configuracionUsuarios.js"></script>
+    <script src="../src/operaciones.js"></script>
+    <script src="../src/tarjeta.js"></script>
+</body>
+</html>
